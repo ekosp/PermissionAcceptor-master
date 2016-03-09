@@ -13,31 +13,27 @@ import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 public final class PermissionUtils {
 
-    // Map of dangerous permissions introduced in later framework versions.
-    // Used to conditionally bypass permission-hold checks on older devices.
+    private static volatile int targetSdkVersion = -1;
+
+    // Check of dangerous permissions introduced in later framework versions.
     private static final SimpleArrayMap<String, Integer> MIN_SDK_PERMISSIONS;
 
     static {
         MIN_SDK_PERMISSIONS = new SimpleArrayMap<>(6);
-        MIN_SDK_PERMISSIONS.put("com.android.voicemail.permission.ADD_VOICEMAIL", 14);
+        MIN_SDK_PERMISSIONS.put("android.permission.READ_EXTERNAL_STORAGE", 16);
         MIN_SDK_PERMISSIONS.put("android.permission.BODY_SENSORS", 20);
         MIN_SDK_PERMISSIONS.put("android.permission.READ_CALL_LOG", 16);
-        MIN_SDK_PERMISSIONS.put("android.permission.READ_EXTERNAL_STORAGE", 16);
         MIN_SDK_PERMISSIONS.put("android.permission.USE_SIP", 9);
         MIN_SDK_PERMISSIONS.put("android.permission.WRITE_CALL_LOG", 16);
+        MIN_SDK_PERMISSIONS.put("com.android.voicemail.permission.ADD_VOICEMAIL", 14);
         MIN_SDK_PERMISSIONS.put("android.permission.CAMERA",1);
-    }
-
-    private static volatile int targetSdkVersion = -1;
-
-    private PermissionUtils() {
     }
 
     /**
      * Checks all given permissions have been granted.
      *
-     * @param grantResults results
-     * @return returns true if all permissions have been granted.
+     * @param grantResults results of permission
+     * @return returns true if permissions have been granted.
      */
     public static boolean verifyPermissions(int... grantResults) {
         for (int result : grantResults) {
@@ -57,7 +53,7 @@ public final class PermissionUtils {
      */
     public static boolean hasSelfPermissions(Context context, String... permissions) {
         for (String permission : permissions) {
-            if (permissionExists(permission) && checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (isPermissionExists(permission) && checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }
@@ -70,7 +66,7 @@ public final class PermissionUtils {
      * @param permission permission
      * @return returns true if the permission exists in this SDK version
      */
-    private static boolean permissionExists(String permission) {
+    private static boolean isPermissionExists(String permission) {
         // Check if the permission could potentially be missing on this device
         Integer minVersion = MIN_SDK_PERMISSIONS.get(permission);
         // If null was returned from the above call, there is no need for a device API level check for the permission;
@@ -79,7 +75,7 @@ public final class PermissionUtils {
     }
 
     /**
-     * Checks given permissions are needed to show rationale.
+     * Checks given permissions are required to show rationale.
      *
      * @param activity    activity
      * @param permissions permission list

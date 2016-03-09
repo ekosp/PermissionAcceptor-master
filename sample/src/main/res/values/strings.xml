@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">PermissionAcceptor</string>
+
+    <string name="check_camera">Check camera permission</string>
+    <string name="check_location">Check location permission</string>
+    <string name="check_camera_location">Check Camera and location permission</string>
+
+    <!--Required for permission path to enable-->
+    <string name="permission_enable_message">Enable permissions from\nSettings > Apps > PermissionAcceptor > Permissions</string>
+
+    <!--Required for camera permission-->
+    <string name="permission_camera_granted">Yes, Camera permission granted</string>
+    <string name="permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
+    <string name="permission_camera_denied">Camera permission was denied. Please consider granting it in order to access the camera!</string>
+
+    <!--Required for Location permission-->
+    <string name="permission_location_granted">Yes, Location permission granted</string>
+    <string name="permission_location_rationale">Location permission is needed to access your location.</string>
+    <string name="permission_location_denied">Locartion permission was denied. Please consider granting it in order to access the location!</string>
+</resources>

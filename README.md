@@ -77,9 +77,26 @@ For example,
     }
 </pre>
 
+# Working with Fragment
+
+PermissionAcceptor is also working with Fragment. You can use this with <b>android.app.Fragment</b> and <b>android.support.v4.app.Fragment</b>.
+
+To work with Fragment just simply follow all above steps and also add few lines of code in your Fragment parent activity.
+
+<pre>
+@Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.body_container);
+        if (fragment != null) {
+            // return onRequestPermissionsResult() method in respected fragment
+            fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+</pre>
+
 # Download
 
-To add it to your project, inculde following in your project build.gradle file
+To integrate it into your project, add library to your project and include following in your project build.gradle file
 <pre>
 dependencies {
     compile project(':library')
